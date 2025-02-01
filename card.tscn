@@ -1,0 +1,95 @@
+[gd_scene load_steps=11 format=3 uid="uid://dsf04ta07hm5t"]
+
+[ext_resource type="Shader" uid="uid://wttxh4gax08f" path="res://card.tres" id="1_fjcsj"]
+[ext_resource type="Script" path="res://card.gd" id="1_yppnu"]
+[ext_resource type="Script" path="res://carddata.gd" id="2_0cwkj"]
+[ext_resource type="Texture2D" uid="uid://b5koqt721yweo" path="res://card.png" id="2_3j3hp"]
+[ext_resource type="FontFile" uid="uid://bf0y3f7sxrvp8" path="res://Grenze_Gotisch/static/GrenzeGotisch-Regular.ttf" id="5_aeu3h"]
+[ext_resource type="FontFile" uid="uid://ucxpgwk0v6d1" path="res://Grenze_Gotisch/static/GrenzeGotisch-Medium.ttf" id="6_ktgpu"]
+[ext_resource type="FontFile" uid="uid://cuudmeugu63ke" path="res://MetalMania-Regular.ttf" id="7_hx1ob"]
+
+[sub_resource type="Resource" id="Resource_pyhpb"]
+script = ExtResource("2_0cwkj")
+usable_in_world = false
+PrimaryEffect = 16
+SecondaryEffect = 14
+rarity = 0.0
+magnitude = 15.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_psf7t"]
+shader = ExtResource("1_fjcsj")
+shader_parameter/Rarity = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmyh8"]
+size = Vector2(600, 800)
+
+[node name="Card" type="Node2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_yppnu")
+card_data = SubResource("Resource_pyhpb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_psf7t")
+texture = ExtResource("2_3j3hp")
+
+[node name="PrimaryTitle" type="Label" parent="."]
+offset_left = -276.0
+offset_top = -374.0
+offset_right = 274.0
+offset_bottom = -109.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -35
+theme_override_fonts/font = ExtResource("5_aeu3h")
+theme_override_font_sizes/font_size = 61
+text = "This is a lot of sample text to help figure out aligning"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PrimarySubtitle" type="Label" parent="PrimaryTitle"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 242.0
+offset_right = 526.0
+offset_bottom = 342.0
+theme_override_colors/font_color = Color(0.259294, 0.259294, 0.259294, 1)
+theme_override_fonts/font = ExtResource("6_ktgpu")
+theme_override_font_sizes/font_size = 40
+text = "This is a sample subtitle!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SecondaryTitle" type="Label" parent="."]
+offset_left = -276.0
+offset_top = 34.0
+offset_right = 274.0
+offset_bottom = 299.0
+theme_override_colors/font_color = Color(0.975665, 1.34766e-06, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("7_hx1ob")
+theme_override_font_sizes/font_size = 46
+text = "This is also a bunch of text to figure out how things look with a lot of text"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SecondarySubtitle" type="Label" parent="SecondaryTitle"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 242.0
+offset_right = 525.0
+offset_bottom = 342.0
+theme_override_colors/font_color = Color(0.690464, 0, 0.0826247, 1)
+theme_override_fonts/font = ExtResource("7_hx1ob")
+theme_override_font_sizes/font_size = 35
+text = "This is a sample subtitle!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_wmyh8")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

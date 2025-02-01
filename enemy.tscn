@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://bscj4rxh47qmq"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_0ndsc"]
+[ext_resource type="Texture2D" uid="uid://dtvhy52bib6vc" path="res://slime.png" id="1_5v4rn"]
+[ext_resource type="Script" path="res://enemy_resource.gd" id="2_kjvr8"]
+[ext_resource type="PackedScene" uid="uid://cbd0y8bbvjw8w" path="res://health.tscn" id="4_2dwfx"]
+
+[sub_resource type="Resource" id="Resource_a2j45"]
+script = ExtResource("2_kjvr8")
+texture = ExtResource("1_5v4rn")
+name = ""
+death_text = ""
+attack_text = ""
+health = 0
+damage = 0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2nbyf"]
+radius = 84.0536
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wy4wx"]
+radius = 793.051
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oe3kq"]
+radius = 113.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_0ndsc")
+data = SubResource("Resource_a2j45")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2nbyf")
+
+[node name="PlayerDetection" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
+shape = SubResource("CircleShape2D_wy4wx")
+
+[node name="BattleRange" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BattleRange"]
+shape = SubResource("CircleShape2D_oe3kq")
+
+[node name="Health" parent="." instance=ExtResource("4_2dwfx")]
+
+[connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
+[connection signal="body_entered" from="BattleRange" to="." method="_on_battle_range_body_entered"]

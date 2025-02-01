@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bycwcj0ilv5rq"]
+
+[ext_resource type="Script" path="res://battle.gd" id="1_7ovoc"]
+[ext_resource type="Shader" uid="uid://nx2rl4i3lgm1" path="res://background1.tres" id="2_mcl68"]
+[ext_resource type="Texture2D" uid="uid://dxdublr0drtmr" path="res://bg.png" id="3_j8042"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8rppr"]
+shader = ExtResource("2_mcl68")
+shader_parameter/amount = 1.0
+
+[node name="Battle" type="Node2D"]
+process_mode = 3
+position = Vector2(-10000, 0)
+script = ExtResource("1_7ovoc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_8rppr")
+texture = ExtResource("3_j8042")
+
+[node name="Hand" type="Node2D" parent="."]
+position = Vector2(0, 416)
+
+[node name="End Battle" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="End Battle" to="." method="_on_end_battle_timeout"]

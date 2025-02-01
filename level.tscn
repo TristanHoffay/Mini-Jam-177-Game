@@ -1,0 +1,128 @@
+[gd_scene load_steps=20 format=4 uid="uid://cs406ocjiqjfk"]
+
+[ext_resource type="Texture2D" uid="uid://ble1q3g23ggh4" path="res://tiles.png" id="1_28pn6"]
+[ext_resource type="PackedScene" uid="uid://bopenxyw0xetl" path="res://player.tscn" id="2_v5uma"]
+[ext_resource type="Script" path="res://carddata.gd" id="3_mf7hf"]
+[ext_resource type="PackedScene" uid="uid://bscj4rxh47qmq" path="res://enemy.tscn" id="3_uj33e"]
+[ext_resource type="Shader" uid="uid://brivy2cg2yexw" path="res://background2.tres" id="4_qye0k"]
+[ext_resource type="Script" path="res://enemy_resource.gd" id="4_t7rqb"]
+[ext_resource type="Texture2D" uid="uid://dtvhy52bib6vc" path="res://slime.png" id="5_o75g5"]
+[ext_resource type="Shader" uid="uid://nx2rl4i3lgm1" path="res://background1.tres" id="5_uqthm"]
+[ext_resource type="Shader" uid="uid://dxtrl7ed7ivi6" path="res://card_mythical2.tres" id="8_8baar"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tbw0j"]
+texture = ExtResource("1_28pn6")
+texture_region_size = Vector2i(300, 300)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, 150, -150, -150, 150, -150, 150, -40, 8, 10, -40, 150)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, -150, 150, -150, 150, -36, -150, -40)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, -150, 150, -150, 150, 150, 40, 150, -10, 8, -150, -40)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, -150, 4, -150, -24, -32, -150, -10)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, 150, -150, -150, -36, -150, -40, 150)
+1:1/0 = 0
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, -150, 150, 150, 36, 150, 40, -150)
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, -150, 150, 4, 32, -24, 10, -150)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, 150, -150, 150, -150, -150, -40, -150, 10, -8, 150, 40)
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, 150, -150, 150, -150, 36, 150, 40)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, -150, 150, 150, -150, 150, -150, 40, -8, -10, 40, -150)
+3:2/0 = 0
+3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-150, 150, -150, -4, -32, 24, -10, 150)
+0:3/0 = 0
+3:3/0 = 0
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(150, 150, -4, 150, 24, 32, 150, 10)
+
+[sub_resource type="TileSet" id="TileSet_7nmxd"]
+tile_size = Vector2i(300, 300)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_tbw0j")
+
+[sub_resource type="Resource" id="Resource_xmh5r"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+PrimaryEffect = 31
+SecondaryEffect = 16
+rarity = 0.0
+magnitude = 1.0
+
+[sub_resource type="Resource" id="Resource_nuphw"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+PrimaryEffect = 0
+SecondaryEffect = 14
+rarity = 2.0
+magnitude = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_63jkq"]
+shader = ExtResource("5_uqthm")
+shader_parameter/amount = 1.0
+
+[sub_resource type="Resource" id="Resource_1j0wo"]
+script = ExtResource("4_t7rqb")
+texture = ExtResource("5_o75g5")
+name = "Happy Slime"
+death_text = ""
+attack_text = ""
+health = 10
+damage = 1
+bgshader = SubResource("ShaderMaterial_63jkq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j4f38"]
+shader = ExtResource("8_8baar")
+shader_parameter/amount = 1.0
+
+[sub_resource type="Resource" id="Resource_iolwy"]
+script = ExtResource("4_t7rqb")
+texture = ExtResource("5_o75g5")
+name = "Happy Slime"
+death_text = ""
+attack_text = ""
+health = 10
+damage = 1
+bgshader = SubResource("ShaderMaterial_j4f38")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_txseq"]
+shader = ExtResource("4_qye0k")
+shader_parameter/amount = 0.525
+
+[sub_resource type="Resource" id="Resource_8qby2"]
+script = ExtResource("4_t7rqb")
+texture = ExtResource("5_o75g5")
+name = "Slime Alpha"
+death_text = ""
+attack_text = ""
+health = 20
+damage = 2
+bgshader = SubResource("ShaderMaterial_txseq")
+
+[node name="level" type="Node2D"]
+process_mode = 1
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAP//AAABAAEAAAAAAP7/AAABAAEAAAAAAP3/AAABAAEAAAAAAPz/AAABAAEAAAABAPz/AAABAAEAAAACAPz/AAABAAEAAAADAPz/AAABAAEAAAAEAPz/AAABAAEAAAAFAPz/AAABAAEAAAAGAPz/AAABAAEAAAAHAPz/AAABAAEAAAAHAP3/AAABAAEAAAAHAP7/AAABAAEAAAAHAP//AAABAAEAAAAHAAAAAAABAAEAAAAHAAEAAAABAAEAAAAGAAEAAAABAAEAAAAFAAEAAAABAAEAAAAEAAEAAAABAAEAAAADAAEAAAABAAEAAAACAAEAAAABAAEAAAABAAEAAAABAAEAAAAAAAEAAAABAAEAAAAAAAAAAAABAAEAAAABAP3/AAABAAEAAAABAP7/AAABAAEAAAABAP//AAABAAEAAAABAAAAAAABAAEAAAACAAAAAAABAAEAAAACAP//AAABAAEAAAADAP//AAABAAEAAAADAP7/AAABAAEAAAADAP3/AAABAAEAAAACAP3/AAABAAEAAAACAP7/AAABAAEAAAADAAAAAAABAAEAAAAEAAAAAAABAAEAAAAEAP//AAABAAEAAAAEAP3/AAABAAEAAAAEAP7/AAABAAEAAAAFAP7/AAABAAEAAAAFAP//AAABAAEAAAAFAAAAAAABAAEAAAAFAP3/AAABAAEAAAAGAP3/AAABAAEAAAAGAP7/AAABAAEAAAAGAP//AAABAAEAAAAGAAAAAAABAAEAAAAAAPv/AAABAAAAAAABAPv/AAABAAAAAAACAPv/AAABAAAAAAADAPv/AAABAAAAAAAEAPv/AAABAAAAAAAFAPv/AAABAAAAAAAGAPv/AAABAAAAAAAHAPv/AAABAAAAAAAIAPv/AAACAAAAAAD///v/AAAAAAAAAAD///z/AAAAAAEAAAD///3/AAAAAAEAAAD///7/AAAAAAEAAAD/////AAAAAAEAAAD//wAAAAAAAAEAAAD//wEAAAAAAAEAAAD//wIAAAAAAAIAAAAAAAIAAAABAAIAAAABAAIAAAABAAIAAAACAAIAAAABAAIAAAADAAIAAAABAAIAAAAEAAIAAAABAAIAAAAFAAIAAAABAAIAAAAGAAIAAAABAAIAAAAHAAIAAAABAAIAAAAIAAIAAAACAAIAAAAIAAAAAAADAAMAAAAIAAEAAAACAAEAAAAIAP3/AAADAAEAAAAIAPz/AAACAAEAAAAIAP7/AAABAAEAAAAIAP//AAABAAEAAAA=")
+tile_set = SubResource("TileSet_7nmxd")
+
+[node name="Player" parent="." instance=ExtResource("2_v5uma")]
+z_index = 10
+position = Vector2(1125, -450)
+cards = Array[ExtResource("3_mf7hf")]([SubResource("Resource_xmh5r"), SubResource("Resource_nuphw")])
+
+[node name="Enemy" parent="." instance=ExtResource("3_uj33e")]
+position = Vector2(2213, -62)
+data = SubResource("Resource_1j0wo")
+
+[node name="Enemy2" parent="." instance=ExtResource("3_uj33e")]
+position = Vector2(1743, -1100)
+data = SubResource("Resource_iolwy")
+
+[node name="Enemy3" parent="." instance=ExtResource("3_uj33e")]
+position = Vector2(482, 204)
+data = SubResource("Resource_8qby2")

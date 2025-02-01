@@ -1,0 +1,98 @@
+IDEARS
+
+Top-down RPG game with turn-based battle scenes
+Player interacts with world and fights enemies through the use of cards
+Each card has a primary effect which is shown to the player, and a secondary effect which is hidden.
+The secondary effect is not always negative for the player, but should never be outright positive (at least substantially so)
+For example, a secondary effect could end a battle, heal the player slightly, open a secret room, give the player a bonus card, etc., but should never kill the player, insta-win a battle, etc.
+In general, secondary effects should be slightly inconvenient or otherwise unexpected (contribute to the fun and challenge)
+Primary effects, on the otherhand, should be nearly always a net positive for the player, otherwise there would be little reason to use the card. 
+There should be occasional exceptions to these rules, and the card effect randomness should be weighted so that this is mostly the case, but not always. The same goes for the scale of the effect,
+such as the amount of healing, damage, etc.
+There could also be some tracking of the ratio of the primary and secondary effect, such as making sure more powerful primary effects are bundled with more risky secondary effects. The goal of 
+this would be to add a level of risk to using more powerful cards and avoid minor cards from having drastic negative effects. This improves the balance of the game. 
+To go even further, there could be 'rarity' levels of cards, where higher rarities have better primary:secondary effect ratios. For example, a high rarity card with a powerful primary effect is
+likely to have a weaker secondary effect, making it more of a net positive and less risky. This allows the player to be more confident about using certain cards, especially in dire moments. Rarity
+should correlate to actual rarity, where higher rarity cards are less likely to be found/dropped.
+
+Setting:
+	Extensive crypt/dungeon
+	(Intro):
+		Player loots a tomb and the spirit laid to rest there curses them and says they need to learn that their actions have consequences.
+		Spirit then closes the way the player came in and challenges them to escape.
+		The loot that was gotten from the tomb is the player's first card, which should be required to leave the room and proceed to main game. This card should therefore be static and not random.
+		The card should introduce the main concept of the primary/secondary effect nature of cards.
+	Once player exists tomb room, they must wander the caverns/dungeon/crypt to find the escape. It should be laid out like a typical game dungeon, where you must find items and unlock doors.
+	Enemies include random pests and creatures, guards, spirits, and other cursed individuals like the player which also use cards.
+	When player reaches the exit, they must battle the tomb spirit (final boss). This fight should have a new meta mechanic introducted regarding cards or effects.
+	Maybe this mechanic could be flipping the cards so that the secondary effect is shown and not the primary, so the player has to pick among the (probably) negative effects and
+	hope for a good hidden effect.
+	
+It needs to be figured out which cards can be used in the world and which can be used in a battle. It seems unavoidable that there will be cards that are not both.
+Perhaps the same cards used in battle cannot be used in the world, and there are two separate decks of cards. This would solve the issue of limiting secondary effects to where the primary effect
+may be used.
+Going along with this separation of world and battle decks, there should be some mechanic to keep the player supplied with cards in battle. Here are some ideas for implementing this:
+	The player is restocked with random cards if below a threshold
+	The player is given a random card every turn
+	The player has an option to pull a new random card at any point (limited to once per turn). To expand on this, there are some possible implementations:
+		The card is automatically used that turn (the player blindly uses a new card)
+		^^ The same, but the player can see the primary effect (basically it is a card in your hand that randomizes every turn)
+	The player can refresh their entire hand (once per turn)
+A combination of these solutions should be used to ensure that the player is always stocked and the random effects do not limit the player to one thing (no cards do damage, all are the same, etc.)
+I don't think the battle deck should be new each battle, and I think the player should be able to collect and save battle cards. However, there must be some variety and supplemental cards in battle.
+WHENEVER A SECONDARY EFFECT DEALS DAMAGE TO THE PLAYER, MAKE SURE IT DOES NOT KILL THE PLAYER!! ALWAYS LEAVE PLAYER WITH AT LEAST 1 HP
+When player hits 1 hp (or maybe a wider fraction of low health), give them a powerful new battle card and pop up effect saying its their "second wind". This is meant to balance the damaging effects
+by giving the player a power comeback if they survive the turn to use it.
+
+GAME OVER:
+	When the player dies, they restart at the tomb. All world changes remain (unlocked doors, bombed walls, other progression), but they have no cards. Enemies probably don't need to respawn.
+
+Ideas for effects:
+	Battle:
+		Positive:
+			Deal X damage to foe
+			Insta-kill enemy (extremely rare or has horrible secondary effect)
+			Heal X health to player
+			Fully heal player
+			Magic/sweep attack (damage all foes)
+			Freeze foe for X-Y turns
+			Poison foe at X degree (damage every turn)
+			Make player invulnerable for X-Y turns (should be low number)
+			Boost attack of player
+			Boost defense of player
+			Cripple attack of foe
+			Cripple defense of foe
+			Reveal secondary effect of random card
+		Negative:
+			Cancel effect of card (card is a dud)
+			Deal X damage to player
+			Heal X damage to foe
+			Fully heal foe
+			Freeze player for X-Y turns
+			Poison player at X degree (damage every turn)
+			Make foe invulnerable for X-Y turns (should be low number)
+			Boost attack of foe
+			Boost defense of foe
+			Cripple attack of player
+			Cripple defense of player
+			
+		Ambiguous:
+			End battle
+			Use random other card
+			Recycle card (replace with random new card)
+			Bomb (damage all enemies and self)
+			Fully heal all battle participants
+			
+	World:
+		Primary:
+			Bomb (open walls)
+			Unlock door
+			Give player new battle card
+			
+		Secondary:
+			Deal X damage to player
+			Slow movement speed by X
+			
+
+Additional ideas if time permits:
+	Health represented by cards, can be used in battle as a last resort
