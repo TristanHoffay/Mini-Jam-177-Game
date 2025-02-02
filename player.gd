@@ -1,11 +1,14 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 @onready var camera_2d = $Camera2D
 @export var cards: Array[CardData] = []
+@onready var health : Health = $Health
 
 
 const SPEED = 700.0
 var can_move = true
 
+func hurt():
+	pass # make whole screen flash red?
 
 func _physics_process(delta):
 	if can_move:

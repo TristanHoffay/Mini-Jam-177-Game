@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://detvkhy4x37yh"]
+
+[ext_resource type="Script" path="res://battle_enemy.gd" id="1_j844r"]
+[ext_resource type="Shader" uid="uid://d4nopgony2f4m" path="res://enemy_frozen.tres" id="2_4c2pi"]
+[ext_resource type="Texture2D" uid="uid://dtvhy52bib6vc" path="res://slime.png" id="2_kkfc4"]
+[ext_resource type="PackedScene" uid="uid://cbd0y8bbvjw8w" path="res://health.tscn" id="3_kbr82"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sixfd"]
+radius = 135.15
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_twr4g"]
+shader = ExtResource("2_4c2pi")
+
+[node name="BattleEnemy" type="Node2D"]
+script = ExtResource("1_j844r")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_sixfd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_twr4g")
+texture = ExtResource("2_kkfc4")
+
+[node name="Health" parent="." instance=ExtResource("3_kbr82")]
+
+[node name="HurtAnim" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="timeout" from="HurtAnim" to="." method="_on_hurt_anim_timeout"]

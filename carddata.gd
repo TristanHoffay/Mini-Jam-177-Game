@@ -140,93 +140,175 @@ enum Effect {
 	BOMB_WALL, UNLOCK_DOOR, GIVE_BATTLE_CARD, CRIPPLE_MOVEMENT, BOOST_MOVEMENT, DAMAGE_PLAYER_IN_WORLD, HEAL_PLAYER_IN_WORLD}
 
 @export var usable_in_world: bool = false
+@export var choose_enemy: bool = false
 @export var PrimaryEffect: Effect
 @export var SecondaryEffect: Effect
 @export var rarity: float = 0
 @export var magnitude: float = 1
+@export var magnitude_secondary: float = 1
+
+static func Generate_Card(luck: float):
+	var newCard: CardData = CardData.new()
+	newCard.PrimaryEffect = Effect.DAMAGE_FOE
+	newCard.SecondaryEffect = Effect.HEAL_PLAYER
+	newCard.magnitude = 17
+	newCard.magnitude_secondary = 8
+	return newCard
 
 func get_primary_text():
 	return (effect_names[PrimaryEffect] as String).replace('$', str(magnitude))
 	
 func get_secondary_text():
-	return (effect_names[SecondaryEffect] as String).replace('$', str(magnitude))
+	return (effect_names[SecondaryEffect] as String).replace('$', str(magnitude_secondary))
 	
-func use_card(battle: Node2D):
-	var callable = Callable(self, effect_funcs[PrimaryEffect])
-	callable.call()
+func use_card(battle: Battle):
+	if PrimaryEffect == Effect.NEGATE_CARD or SecondaryEffect == Effect.NEGATE_CARD:
+		battle.dialog.add_line("The card vanished without doing a single thing...")
+		await battle.wait(2.0)
+	elif PrimaryEffect == Effect.SWAP_CARD or SecondaryEffect == Effect.SWAP_CARD:
+		battle.dialog.add_line("Your card suddenly turned into a different one...")
+		var newCardData = Generate_Card((magnitude + magnitude_secondary)/2)
+		var newcard = battle.CARD.instantiate()
+		newcard.card_data = newCardData
+		newcard.battleScene = battle
+		battle.cards.push_back(newcard)
+		battle.hand.add_child(newcard)
+		newcard.position.y = 1000
+		await battle.use_card(newcard)
+		await battle.wait(2.0)
+	else:
+		var eff1 = Callable(self, effect_funcs[PrimaryEffect])
+		await eff1.call(battle, magnitude)
+		var eff2 = Callable(self, effect_funcs[SecondaryEffect])
+		await eff2.call(battle, magnitude_secondary)
+		# wait for input? or time?
+		if PrimaryEffect != Effect.USE_RANDOM_CARD and SecondaryEffect != Effect.USE_RANDOM_CARD:
+			battle.do_enemy_turn()
 	
-func damage_foe():
-	pass
-func ko_foe():
-	pass
-func heal_player():
-	pass
-func full_heal_player():
-	pass
-func damage_all_foe():
-	pass
-func freeze_foe():
-	pass
-func poison_foe():
-	pass 
-func player_invulnerable():
-	pass
-func boost_player_damage():
-	pass
-func boost_player_defense():
-	pass
-func cripple_foe_damage():
-	pass
-func cripple_foe_defense():
-	pass
-func reveal_random_secondary():
-	pass
+func damage_foe(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	battle.hurt_enemy(enemy, magn * battle.damage_factor, false)
+	
+func ko_foe(battle: Battle, magn: float):
+	battle.enemy_dead(battle.enemies[battle.enemy_target])
+func heal_player(battle: Battle, magn: float):
+	battle.heal_player(magn)
+func full_heal_player(battle: Battle, magn: float):
+	battle.heal_player(9999999) #should be enough, right?
+func damage_all_foe(battle: Battle, magn: float):
+	for enemy in battle.enemies:
+		battle.hurt_enemy(enemy, magn * battle.damage_factor, false)
+		await battle.wait(1.5)
+func freeze_foe(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.freeze(magn)
+	battle.dialog.add_line(enemy.data.name + " was frozen for the next " + str(magn) + " turns!")
+	await battle.wait(1.5)
+func poison_foe(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.poison(ceili(magn))
+	battle.dialog.add_line(enemy.data.name + " was poisoned at level " + str(magn) + "!")
+	await battle.wait(1.5)
+func player_invulnerable(battle: Battle, magn: float):
+	battle.player_invuln_turns = ceili(magn)
+	battle.dialog.add_line("You are now invulnerable for " + str(ceili(magn)) + " turns!")
+	await battle.wait(1.5)
+func boost_player_damage(battle: Battle, magn: float):
+	battle.damage_factor *= magn
+	battle.dialog.add_line("Your damage output has been booseted by " + str(magn) + " times!")
+	await battle.wait(1.5)
+func boost_player_defense(battle: Battle, magn: float):
+	battle.defense_factor *= magn
+	battle.dialog.add_line("Your defense was fortified by " + str(magn) + " times!")
+	await battle.wait(1.5)
+func cripple_foe_damage(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.attack_factor *= magn
+	battle.dialog.add_line(enemy.data.name + "'s attack power was weakened by " + str(magn) + " times!")
+	await battle.wait(1.5)
+func cripple_foe_defense(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.health.defense *= magn
+	battle.dialog.add_line(enemy.data.name + "'s defense was crippled by " + str(magn) + " times!")
+	await battle.wait(1.5)
+func reveal_random_secondary(battle: Battle, magn: float):
+	await battle.wait(1)
+	var i = randi_range(0, battle.cards.size()-1)
+	battle.cards[i].reveal_secondary()
+	battle.dialog.add_line("Revealed the hidden effect of a card!")
 	# negative effects
-func negate_card():
-	pass
-func damage_player():
-	pass 
-func heal_foe():
-	pass
-func full_heal_foe():
-	pass 
-func freeze_player():
-	pass
-func poison_player():
-	pass
-func foe_invulnerable():
-	pass
-func boost_foe_damage():
-	pass
-func boost_foe_defense():
-	pass
-func cripple_player_damage():
-	pass 
-func cripple_player_defense():
-	pass
+func negate_card(battle: Battle, magn: float):
+	pass # doesnt need to be called? logic for negated card is inside use_card()
+func damage_player(battle: Battle, magn: float):
+	battle.hurt_player(magn, true) 
+func heal_foe(battle: Battle, magn: float):
+	battle.heal_enemy(magn)
+func full_heal_foe(battle: Battle, magn: float):
+	battle.heal_enemy(99999999)
+func freeze_player(battle: Battle, magn: float):
+	battle.player_frozen_turns = floori(magn)
+	battle.dialog.add_line("You were frozen for the next " + str(magn) + " turns!")
+	await battle.wait(1.5)
+func poison_player(battle: Battle, magn: float):
+	battle.player_poisoning = ceili(magn)
+	battle.dialog.add_line("You were poisoned at level " + str(magn) + "!")
+	await battle.wait(1.5)
+func foe_invulnerable(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.invuln_turns = ceili(magn)
+	battle.dialog.add_line(enemy.data.name + " is now invulnerable for " + str(ceili(magn)) + " turns!")
+	await battle.wait(1.5)
+func boost_foe_damage(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.attack_factor *= magn
+	battle.dialog.add_line(enemy.data.name + "'s attack power was strengthened by " + str(magn) + " times!")
+func boost_foe_defense(battle: Battle, magn: float):
+	var enemy = battle.enemies[battle.enemy_target]
+	enemy.health.defense *= magn
+	battle.dialog.add_line(enemy.data.name + "'s defense was fortified by " + str(magn) + " times!")
+func cripple_player_damage(battle: Battle, magn: float):
+	battle.damage_factor *= magn
+	battle.dialog.add_line("Your damage output has been weakened by " + str(magn) + " times!")
+	await battle.wait(1.5)
+func cripple_player_defense(battle: Battle, magn: float):
+	battle.defense_factor *= magn
+	battle.dialog.add_line("Your defense was crippled by " + str(magn) + " times!")
+	await battle.wait(1.5)
 	# ambiguous effects
-func end_battle():
-	pass
-func use_random_card():
-	pass
-func swap_card():
-	pass
-func bomb_in_battle():
+func end_battle(battle: Battle, magn: float):
+	battle.dialog.add_line("Say goodbye! The battle is over now.")
+	await battle.wait(2)
+	battle.end_battle()
+func use_random_card(battle: Battle, magn: float):
+	await battle.wait(1)
+	if battle.cards.size() > 0:
+		var i = randi_range(0, battle.cards.size()-1)
+		var card = battle.cards[i]
+		card.goal_pos.y -= 150
+		battle.dialog.add_line("You used another card!")
+		await battle.wait(2.0)
+		await battle.use_card(card)
+	else:
+		battle.dialog.add_line("You have no other cards to use!")
+		battle.do_enemy_turn()
+func swap_card(battle: Battle, magn: float):
+	pass # this is also done in use_card() since it cancels the other effect
+func bomb_in_battle(battle: Battle, magn: float):
 	pass 
-func full_heall_all():
+func full_heall_all(battle: Battle, magn: float):
 	pass
 	# world effects
-func bomb_wall():
+func bomb_wall(battle: Battle, magn: float):
 	pass
-func unlock_door():
+func unlock_door(battle: Battle, magn: float):
 	pass
-func give_battle_card():
+func give_battle_card(battle: Battle, magn: float):
 	pass 
-func cripple_movement():
+func cripple_movement(battle: Battle, magn: float):
 	pass
-func boost_movement():
+func boost_movement(battle: Battle, magn: float):
 	pass
-func damage_player_in_world():
+func damage_player_in_world(battle: Battle, magn: float):
 	pass
-func heal_player_in_world():
+func heal_player_in_world(battle: Battle, magn: float):
 	pass

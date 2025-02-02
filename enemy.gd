@@ -1,4 +1,4 @@
-extends CharacterBody2D
+class_name Enemy extends CharacterBody2D
 @onready var sprite_2d = $Sprite2D
 const BATTLE = preload("res://battle.tscn")
 @export var speed: float = 300
@@ -49,6 +49,6 @@ func _on_battle_range_body_entered(body: CharacterBody2D):
 		battle = BATTLE.instantiate()
 		add_sibling(battle)
 	print(data.name + " joined the battle")
-	battle.add_enemy(data)
+	battle.add_enemy(self)
 	body.can_move = false
 	can_move = false

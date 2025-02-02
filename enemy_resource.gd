@@ -9,3 +9,6 @@ class_name EnemyData extends Resource
 #@export var defense: int
 @export var damage: int
 @export var bgshader: ShaderMaterial
+@export var attacks: Array[Dictionary]
+# attacks should have "text" and "damage" keys
+#example: {"text":"threw a rock at you!", "damage":5}

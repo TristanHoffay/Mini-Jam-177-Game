@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmu3m7q4p1nbo"]
+
+[ext_resource type="Script" path="res://dialog.gd" id="1_tf1b2"]
+[ext_resource type="Texture2D" uid="uid://cjluk7ximt0er" path="res://dialog.png" id="1_u7ryb"]
+[ext_resource type="Shader" uid="uid://ccab6xo12snap" path="res://dialog.tres" id="1_w25gn"]
+[ext_resource type="FontFile" uid="uid://46x02sjxdrwx" path="res://Iceberg-Regular.ttf" id="3_1qdv0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amg3o"]
+shader = ExtResource("1_w25gn")
+shader_parameter/amount = 1.0
+shader_parameter/border_padding = 0.05
+
+[node name="Dialog" type="Node2D"]
+script = ExtResource("1_tf1b2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_amg3o")
+texture = ExtResource("1_u7ryb")
+
+[node name="DialogText" type="Label" parent="Sprite2D"]
+offset_left = -854.0
+offset_top = -99.0
+offset_right = 850.0
+offset_bottom = 100.0
+theme_override_fonts/font = ExtResource("3_1qdv0")
+theme_override_font_sizes/font_size = 51
+text = "This is some sample text for the dialog
+second line
+third line
+fourth"
+autowrap_mode = 2
+max_lines_visible = 3

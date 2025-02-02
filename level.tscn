@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://cs406ocjiqjfk"]
+[gd_scene load_steps=23 format=4 uid="uid://cs406ocjiqjfk"]
 
 [ext_resource type="Texture2D" uid="uid://ble1q3g23ggh4" path="res://tiles.png" id="1_28pn6"]
 [ext_resource type="PackedScene" uid="uid://bopenxyw0xetl" path="res://player.tscn" id="2_v5uma"]
@@ -45,21 +45,55 @@ tile_size = Vector2i(300, 300)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_tbw0j")
 
-[sub_resource type="Resource" id="Resource_xmh5r"]
-script = ExtResource("3_mf7hf")
-usable_in_world = false
-PrimaryEffect = 31
-SecondaryEffect = 16
-rarity = 0.0
-magnitude = 1.0
-
 [sub_resource type="Resource" id="Resource_nuphw"]
 script = ExtResource("3_mf7hf")
 usable_in_world = false
+choose_enemy = true
 PrimaryEffect = 0
 SecondaryEffect = 14
 rarity = 2.0
 magnitude = 1.0
+magnitude_secondary = 1.0
+
+[sub_resource type="Resource" id="Resource_7ktxw"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+choose_enemy = true
+PrimaryEffect = 5
+SecondaryEffect = 2
+rarity = 0.0
+magnitude = 2.0
+magnitude_secondary = 20.0
+
+[sub_resource type="Resource" id="Resource_ky7c3"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+choose_enemy = true
+PrimaryEffect = 11
+SecondaryEffect = 25
+rarity = 0.0
+magnitude = 1.0
+magnitude_secondary = 1.0
+
+[sub_resource type="Resource" id="Resource_10pgx"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+choose_enemy = true
+PrimaryEffect = 0
+SecondaryEffect = 26
+rarity = 0.0
+magnitude = 1.0
+magnitude_secondary = 1.0
+
+[sub_resource type="Resource" id="Resource_6cbnb"]
+script = ExtResource("3_mf7hf")
+usable_in_world = false
+choose_enemy = true
+PrimaryEffect = 1
+SecondaryEffect = 17
+rarity = 0.755
+magnitude = 1.0
+magnitude_secondary = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_63jkq"]
 shader = ExtResource("5_uqthm")
@@ -72,8 +106,12 @@ name = "Happy Slime"
 death_text = ""
 attack_text = ""
 health = 10
-damage = 1
+damage = 40
 bgshader = SubResource("ShaderMaterial_63jkq")
+attacks = Array[Dictionary]([{
+"damage": 45,
+"text": "absorbed your body!"
+}])
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4f38"]
 shader = ExtResource("8_8baar")
@@ -88,6 +126,7 @@ attack_text = ""
 health = 10
 damage = 1
 bgshader = SubResource("ShaderMaterial_j4f38")
+attacks = Array[Dictionary]([])
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_txseq"]
 shader = ExtResource("4_qye0k")
@@ -102,6 +141,7 @@ attack_text = ""
 health = 20
 damage = 2
 bgshader = SubResource("ShaderMaterial_txseq")
+attacks = Array[Dictionary]([])
 
 [node name="level" type="Node2D"]
 process_mode = 1
@@ -113,7 +153,7 @@ tile_set = SubResource("TileSet_7nmxd")
 [node name="Player" parent="." instance=ExtResource("2_v5uma")]
 z_index = 10
 position = Vector2(1125, -450)
-cards = Array[ExtResource("3_mf7hf")]([SubResource("Resource_xmh5r"), SubResource("Resource_nuphw")])
+cards = Array[ExtResource("3_mf7hf")]([SubResource("Resource_nuphw"), SubResource("Resource_7ktxw"), SubResource("Resource_ky7c3"), SubResource("Resource_10pgx"), SubResource("Resource_6cbnb")])
 
 [node name="Enemy" parent="." instance=ExtResource("3_uj33e")]
 position = Vector2(2213, -62)

@@ -11,10 +11,12 @@
 [sub_resource type="Resource" id="Resource_pyhpb"]
 script = ExtResource("2_0cwkj")
 usable_in_world = false
+choose_enemy = false
 PrimaryEffect = 16
 SecondaryEffect = 14
 rarity = 0.0
 magnitude = 15.0
+magnitude_secondary = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_psf7t"]
 shader = ExtResource("1_fjcsj")
@@ -24,15 +26,16 @@ shader_parameter/Rarity = 0.0
 size = Vector2(600, 800)
 
 [node name="Card" type="Node2D"]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.4, 0.4)
 script = ExtResource("1_yppnu")
 card_data = SubResource("Resource_pyhpb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 4
 material = SubResource("ShaderMaterial_psf7t")
 texture = ExtResource("2_3j3hp")
 
-[node name="PrimaryTitle" type="Label" parent="."]
+[node name="PrimaryTitle" type="Label" parent="Sprite2D"]
 offset_left = -276.0
 offset_top = -374.0
 offset_right = 274.0
@@ -40,18 +43,18 @@ offset_bottom = -109.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -35
 theme_override_fonts/font = ExtResource("5_aeu3h")
-theme_override_font_sizes/font_size = 61
+theme_override_font_sizes/font_size = 70
 text = "This is a lot of sample text to help figure out aligning"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="PrimarySubtitle" type="Label" parent="PrimaryTitle"]
+[node name="PrimarySubtitle" type="Label" parent="Sprite2D/PrimaryTitle"]
 layout_mode = 0
 offset_left = 26.0
-offset_top = 242.0
+offset_top = 268.0
 offset_right = 526.0
-offset_bottom = 342.0
+offset_bottom = 368.0
 theme_override_colors/font_color = Color(0.259294, 0.259294, 0.259294, 1)
 theme_override_fonts/font = ExtResource("6_ktgpu")
 theme_override_font_sizes/font_size = 40
@@ -59,25 +62,26 @@ text = "This is a sample subtitle!"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="SecondaryTitle" type="Label" parent="."]
+[node name="SecondaryTitle" type="Label" parent="Sprite2D"]
 offset_left = -276.0
-offset_top = 34.0
+offset_top = 18.0
 offset_right = 274.0
-offset_bottom = 299.0
+offset_bottom = 283.0
 theme_override_colors/font_color = Color(0.975665, 1.34766e-06, 3.85046e-07, 1)
+theme_override_constants/line_spacing = -5
 theme_override_fonts/font = ExtResource("7_hx1ob")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 51
 text = "This is also a bunch of text to figure out how things look with a lot of text"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="SecondarySubtitle" type="Label" parent="SecondaryTitle"]
+[node name="SecondarySubtitle" type="Label" parent="Sprite2D/SecondaryTitle"]
 layout_mode = 0
-offset_left = 25.0
-offset_top = 242.0
-offset_right = 525.0
-offset_bottom = 342.0
+offset_left = 26.0
+offset_top = 262.0
+offset_right = 526.0
+offset_bottom = 362.0
 theme_override_colors/font_color = Color(0.690464, 0, 0.0826247, 1)
 theme_override_fonts/font = ExtResource("7_hx1ob")
 theme_override_font_sizes/font_size = 35
@@ -90,6 +94,10 @@ autowrap_mode = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_wmyh8")
 
+[node name="VanishTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="timeout" from="VanishTimer" to="." method="_on_vanish_timer_timeout"]
