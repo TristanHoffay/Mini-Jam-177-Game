@@ -5,11 +5,18 @@ const BATTLE = preload("res://battle.tscn")
 @export var data: EnemyData
 var direction : Vector2 = Vector2.ZERO
 var can_move = true
+@export var wanders: bool = true
 var playerFound: CharacterBody2D
+const PLAYER = preload("res://player.png")
+const BOSS = preload("res://boss.png")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Load data's texture
+	if MusicPlayer.newgame and data.texture == BOSS:
+		data.texture = PLAYER
 	sprite_2d.texture = data.texture
+	sprite_2d.scale *= data.sprite_scale
+	MusicPlayer.enemies_in_world.append(self)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,7 +25,7 @@ func _physics_process(delta):
 		if playerFound:
 			velocity = (playerFound.position - position).normalized() * speed
 			move_and_slide()
-		else:
+		elif wanders:
 			if direction:
 				# Chance to stop moving
 				if randf() < .05:

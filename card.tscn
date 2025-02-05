@@ -21,6 +21,8 @@ magnitude_secondary = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_psf7t"]
 shader = ExtResource("1_fjcsj")
 shader_parameter/Rarity = 0.0
+shader_parameter/primary_strength = -1.0
+shader_parameter/secondary_strength = 0.68
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmyh8"]
 size = Vector2(600, 800)

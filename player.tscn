@@ -1,11 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://bopenxyw0xetl"]
+[gd_scene load_steps=10 format=3 uid="uid://bopenxyw0xetl"]
 
 [ext_resource type="Texture2D" uid="uid://5rhx0vu228lp" path="res://player.png" id="1_mvt21"]
 [ext_resource type="Script" path="res://player.gd" id="2_dpo55"]
 [ext_resource type="PackedScene" uid="uid://cbd0y8bbvjw8w" path="res://health.tscn" id="3_oss21"]
+[ext_resource type="Shader" uid="uid://cnuhjoqtq8fi3" path="res://hp.tres" id="4_yetj6"]
+[ext_resource type="Texture2D" uid="uid://vhwo0thj0l3g" path="res://particle.png" id="5_a6gr1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wgb4n"]
-size = Vector2(378, 356)
+[sub_resource type="CircleShape2D" id="CircleShape2D_02yio"]
+radius = 185.327
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3c7ot"]
+shader = ExtResource("4_yetj6")
+shader_parameter/health_percent = 1.0
+
+[sub_resource type="Gradient" id="Gradient_qvjhc"]
+offsets = PackedFloat32Array(0, 0.319865, 0.43771, 0.744108, 1)
+colors = PackedColorArray(1, 0, 0, 0, 0.526793, 4.99357e-07, 9.62615e-08, 1, 0.957794, 0.278794, 3.85046e-07, 1, 1, 0.74902, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_0v06x"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
@@ -17,9 +32,28 @@ texture = ExtResource("1_mvt21")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3, 113)
-shape = SubResource("RectangleShape2D_wgb4n")
+shape = SubResource("CircleShape2D_02yio")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
 
 [node name="Health" parent="." instance=ExtResource("3_oss21")]
+max_health = 200
+health = 200
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+z_index = 60
+material = SubResource("ShaderMaterial_3c7ot")
+position = Vector2(-180, -426)
+amount = 6
+local_coords = true
+texture = ExtResource("5_a6gr1")
+direction = Vector2(0, 1)
+spread = 34.69
+gravity = Vector2(0, -400)
+initial_velocity_min = 59.34
+initial_velocity_max = 117.48
+color_ramp = SubResource("Gradient_qvjhc")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("Curve_0v06x")

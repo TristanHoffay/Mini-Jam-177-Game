@@ -11,6 +11,7 @@ func take_damage(damage: float, is_survivable_secondary_effect: bool):
 	var dmg = floori(damage/defense)
 	health -= dmg
 	get_parent().hurt()
+	MusicPlayer.play_hurt()
 	if health <= 0:
 		if is_survivable_secondary_effect and survives_secondary_effects:
 			health = 1

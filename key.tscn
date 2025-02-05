@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://d4eps8n6dhxqr"]
+
+[ext_resource type="Script" path="res://key.gd" id="1_nuqhb"]
+[ext_resource type="Shader" uid="uid://b12t3mntlx781" path="res://door.tres" id="1_yby3g"]
+[ext_resource type="Texture2D" uid="uid://bd13svfau0lmj" path="res://key.png" id="2_ioog1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_032id"]
+radius = 455.133
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tc30d"]
+radius = 385.876
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pjxga"]
+shader = ExtResource("1_yby3g")
+shader_parameter/Door_Color = Color(1, 0, 0, 1)
+
+[node name="Key" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_nuqhb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_032id")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_tc30d")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_pjxga")
+texture = ExtResource("2_ioog1")
